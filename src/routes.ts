@@ -18,15 +18,35 @@ export default (app: Express) => {
     app.get('/', (request, response) => {
         return response.send('OK');
     });
-    app.post('/user', new ValidateParameterUserMiddleware().validateUser,
+
+    app.post('/user',
+     new ValidateParameterUserMiddleware().validateUser,
      new ValidateSizeNameMiddleware().validateSize,
      new UserPasswordConfirmMiddleware().different, 
      new CheckSingleUserMiddleware().single, 
-     new CreateUserController().create)
-    app.post('/user/login', new LoginParamsUserMiddleware().validateParams,
-     new LoginUserController().validate)
-    app.post('/user/:userId/tasks', new VerifyUserTaskMiddleware().verifyUser, new TaskParamsMiddleware().validateParams, new CreateTaskController().create)
-    app.get('/user/:userId/tasks', new VerifyUserTaskMiddleware().verifyUser, new GetTaskController().getTask)
-    app.put('/user/:userId/tasks/:id', new VerifyUserTaskMiddleware().verifyUser, new VerifyIdTaskMiddleware().verifyId, new TaskParamsMiddleware().validateParams, new EditTaskController().edit)
-    app.delete('/user/:userId/tasks/:id', new VerifyUserTaskMiddleware().verifyUser, new VerifyIdTaskMiddleware().verifyId, new RemoveTaskController().remove)
+     new CreateUserController().create);
+
+    app.post('/user/login',
+     new LoginParamsUserMiddleware().validateParams,
+     new LoginUserController().validate);
+
+    app.post('/user/:userId/tasks',
+     new VerifyUserTaskMiddleware().verifyUser,
+     new TaskParamsMiddleware().validateParams,
+      new CreateTaskController().create);
+
+    app.get('/user/:userId/tasks',
+     new VerifyUserTaskMiddleware().verifyUser,
+     new GetTaskController().getTask);
+
+    app.put('/user/:userId/tasks/:id',
+     new VerifyUserTaskMiddleware().verifyUser,
+     new VerifyIdTaskMiddleware().verifyId,
+      new TaskParamsMiddleware().validateParams,
+      new EditTaskController().edit);
+      
+    app.delete('/user/:userId/tasks/:id',
+     new VerifyUserTaskMiddleware().verifyUser,
+     new VerifyIdTaskMiddleware().verifyId,
+      new RemoveTaskController().remove)
 }
