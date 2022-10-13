@@ -26,7 +26,7 @@ export class Task{
         return{
             id: this.id,
             description: this.description,
-            datail: this.detail
+            detail: this.detail
         }
     }
 
