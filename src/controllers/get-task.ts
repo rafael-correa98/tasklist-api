@@ -4,10 +4,25 @@ import { usersDB } from "../db/users";
 export class GetTaskController {
   getTask(request: Request, response: Response) {
     const {userId} = request.params
+    const { description, archived } = request.query
     
-    const userIndex = usersDB.findIndex(user => user.id === userId)
+    const user = usersDB.find((user) => userId === user.id);
 
-    let tasks = usersDB[userIndex].tasks.map(task => task.toJson())
+    const tasks = user?.tasks.filter((task) => {
+      let filterDescription = true;
+      let filterArchived = true;
+
+      if (description) {
+        filterDescription = task.description
+          .toLowerCase()
+          .includes(description.toString().toLowerCase());
+      }
+      if (archived) {
+        filterArchived =
+          task.archived === (archived === "true" ? true : false);
+      }
+      return filterDescription && filterArchived;
+    });
     
     return response.json(tasks)
   }
