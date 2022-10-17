@@ -5,6 +5,7 @@ import { EditTaskController } from "./controllers/edit-task";
 import { GetTaskController } from "./controllers/get-task";
 import { LoginUserController } from "./controllers/login-user";
 import { RemoveTaskController } from "./controllers/remove-task";
+import { ChangeStatusArchivedController } from "./controllers/change-status-archived";
 import { CheckSingleUserMiddleware } from "./middlewares/check-single-user";
 import { LoginParamsUserMiddleware } from "./middlewares/login-params";
 import { TaskParamsMiddleware } from "./middlewares/task-params";
@@ -13,6 +14,7 @@ import { ValidateParameterUserMiddleware } from "./middlewares/validate-paramete
 import { ValidateSizeNameMiddleware } from "./middlewares/validate-size-name";
 import { VerifyIdTaskMiddleware } from "./middlewares/verify-id-task";
 import { VerifyUserTaskMiddleware } from "./middlewares/verify-user-task";
+import { TaskArchivedParamsMiddleware } from "./middlewares/verify-status-params";
 
 export default (app: Express) => {
     app.get('/', (request, response) => {
@@ -48,5 +50,11 @@ export default (app: Express) => {
     app.delete('/user/:userId/tasks/:id',
      new VerifyUserTaskMiddleware().verifyUser,
      new VerifyIdTaskMiddleware().verifyId,
-      new RemoveTaskController().remove)
+     new RemoveTaskController().remove)
+
+    app.put("/user/:userID/tasks/:id",
+     new VerifyUserTaskMiddleware().verifyUser,
+     new VerifyIdTaskMiddleware().verifyId,
+     new TaskArchivedParamsMiddleware().validateParams,
+     new ChangeStatusArchivedController().change) 
 }

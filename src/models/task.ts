@@ -16,6 +16,11 @@ export class Task{
         return this._detail
     }
 
+    private _archived: boolean = false
+    get archived(): boolean {
+        return this._archived
+    }
+
     constructor(description: string, detail: string){
         this._id = crypto.randomUUID()
         this._description = description
@@ -36,6 +41,10 @@ export class Task{
 
         this._description = description
         this._detail = detail
+    }
+
+    changeStatusArchived(status: boolean){
+        this._archived = status
     }
 
     
