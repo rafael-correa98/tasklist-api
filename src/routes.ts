@@ -52,7 +52,7 @@ export default (app: Express) => {
      new VerifyIdTaskMiddleware().verifyId,
      new RemoveTaskController().remove)
 
-    app.put("/user/:userID/tasks/:id",
+    app.put("/user/:userId/tasks/:id/archived",
      new VerifyUserTaskMiddleware().verifyUser,
      new VerifyIdTaskMiddleware().verifyId,
      new TaskArchivedParamsMiddleware().validateParams,

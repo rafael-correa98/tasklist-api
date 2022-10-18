@@ -8,12 +8,12 @@ export class ChangeStatusArchivedController {
 
         const user = usersDB.find((user) => userId === user.id);
 
-        const tasksFound = user?.tasks.find(
+        const taskFound = user?.tasks.find(
             (task) => id === task.id
           );
       
-          tasksFound?.changeStatusArchived(archived)
+          taskFound?.changeStatusArchived(archived)
 
-          return response.status(200).json(tasksFound);
+          return response.status(200).json(taskFound);
     }
 }

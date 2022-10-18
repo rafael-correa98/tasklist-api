@@ -9,7 +9,7 @@ export class CreateUserController {
         const user = new User(name, password)
 
         usersDB.push(user)
-
+        
         return response.json(user.toJson())
     }
 }
