@@ -1,13 +1,15 @@
 import express from 'express';
 import appRoutes from './routes'
 import cors from "cors"
+import { pgHelper } from './database/pg-helper';
 
 const app = express();
-
 app.use(express.json());
 app.use(cors())
 
 appRoutes(app)
 
-app.listen(process.env.PORT || 3333, () => console.log("Servidor iniciado"));
+pgHelper.connect().then(() => {
+    app.listen(process.env.PORT || 3333, () => console.log("Servidor iniciado"));
+}).catch((err) => console.log(err));
 
