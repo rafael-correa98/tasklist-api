@@ -5,7 +5,7 @@ export class UserPasswordConfirmMiddleware{
         const { password, repeatPassword } = request.body
 
         if (password !== repeatPassword) {
-            return response.status(404).json({ error: "Campos de senhas devem ser iguais" });
+            return response.status(400).json({ error: "Campos de senhas devem ser iguais" });
         }
       
         next()

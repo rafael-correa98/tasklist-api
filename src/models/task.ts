@@ -26,26 +26,4 @@ export class Task{
         this._description = description
         this._detail = detail
     }
-
-    toJson(){
-        return{
-            id: this.id,
-            description: this.description,
-            detail: this.detail
-        }
-    }
-
-    updateInformation(description: string, detail: string){
-        if(!description) throw new Error("Descrição inválida")
-        if(!detail) throw new Error("Detalhamento inválido")
-
-        this._description = description
-        this._detail = detail
-    }
-
-    changeStatusArchived(status: boolean){
-        this._archived = status
-    }
-
-    
 }

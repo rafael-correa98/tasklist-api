@@ -1,60 +1,56 @@
 import { Express } from "express";
-import { CreateTaskController } from "./controllers/create-task";
-import { CreateUserController } from "./controllers/create-user";
-import { EditTaskController } from "./controllers/edit-task";
-import { GetTaskController } from "./controllers/get-task";
-import { LoginUserController } from "./controllers/login-user";
-import { RemoveTaskController } from "./controllers/remove-task";
-import { ChangeStatusArchivedController } from "./controllers/change-status-archived";
+import { UserController } from "./controllers/user.controller";
+import { TaskController } from "./controllers/task.controller";
 import { CheckSingleUserMiddleware } from "./middlewares/check-single-user";
-import { LoginParamsUserMiddleware } from "./middlewares/login-params";
-import { TaskParamsMiddleware } from "./middlewares/task-params";
+import { VerifyParamsMiddleware } from "./middlewares/verify-params";
 import { UserPasswordConfirmMiddleware } from "./middlewares/user-password-confirm";
-import { ValidateParameterUserMiddleware } from "./middlewares/validate-parameter-user";
 import { ValidateSizeNameMiddleware } from "./middlewares/validate-size-name";
-import { VerifyIdTaskMiddleware } from "./middlewares/verify-id-task";
-import { VerifyUserTaskMiddleware } from "./middlewares/verify-user-task";
+import { VerifyExistByIdMiddleware } from "./middlewares/verify-exist-by-id-middleware";
 import { TaskArchivedParamsMiddleware } from "./middlewares/verify-status-params";
 
 export default (app: Express) => {
-    app.get('/', (request, response) => {
-        return response.send('OK');
-    });
+  
+  app.get('/', (request, response) => {
+    return response.send('OK');
+  });
+  
+  const userController = new UserController();
+  const taskController = new TaskController();
 
-    app.post('/user',
-     new ValidateParameterUserMiddleware().validateUser,
-     new ValidateSizeNameMiddleware().validateSize,
-     new UserPasswordConfirmMiddleware().different, 
-     new CheckSingleUserMiddleware().single, 
-     new CreateUserController().create);
+  app.post('/user',
+    new VerifyParamsMiddleware().validateUserCreateUser,
+    new ValidateSizeNameMiddleware().validateSize,
+    new UserPasswordConfirmMiddleware().different, 
+    new CheckSingleUserMiddleware().single, 
+    userController.create);
 
-    app.post('/user/login',
-     new LoginParamsUserMiddleware().validateParams,
-     new LoginUserController().validate);
+  app.post('/user/login',
+    new VerifyParamsMiddleware().validateParamsLogin,
+    userController.validate);
 
-    app.post('/user/:userId/tasks',
-     new VerifyUserTaskMiddleware().verifyUser,
-     new TaskParamsMiddleware().validateParams,
-      new CreateTaskController().create);
+  app.post('/user/:userId/tasks',
+    new VerifyExistByIdMiddleware().verifyUserId,
+    new VerifyParamsMiddleware().validateParamsTask,
+    taskController.create);
 
-    app.get('/user/:userId/tasks',
-     new VerifyUserTaskMiddleware().verifyUser,
-     new GetTaskController().getTask);
+  app.get('/user/:userId/tasks',
+    new VerifyExistByIdMiddleware().verifyUserId,
+    taskController.getTask);
 
-    app.put('/user/:userId/tasks/:id',
-     new VerifyUserTaskMiddleware().verifyUser,
-     new VerifyIdTaskMiddleware().verifyId,
-      new TaskParamsMiddleware().validateParams,
-      new EditTaskController().edit);
-      
-    app.delete('/user/:userId/tasks/:id',
-     new VerifyUserTaskMiddleware().verifyUser,
-     new VerifyIdTaskMiddleware().verifyId,
-     new RemoveTaskController().remove)
+  app.put('/user/:userId/tasks/:id',
+    new VerifyParamsMiddleware().validateParamsTask,
+    new VerifyExistByIdMiddleware().verifyUserId,
+    new VerifyExistByIdMiddleware().verifyTaskId,
+    taskController.edit);
+    
+  app.delete('/user/:userId/tasks/:id',
+    new VerifyExistByIdMiddleware().verifyUserId,
+    new VerifyExistByIdMiddleware().verifyTaskId,
+    taskController.remove)
 
-    app.put("/user/:userId/tasks/:id/archived",
-     new VerifyUserTaskMiddleware().verifyUser,
-     new VerifyIdTaskMiddleware().verifyId,
-     new TaskArchivedParamsMiddleware().validateParams,
-     new ChangeStatusArchivedController().change) 
+  app.put("/user/:userId/tasks/:id/archived",
+    new VerifyExistByIdMiddleware().verifyUserId,
+    new VerifyExistByIdMiddleware().verifyTaskId,
+    new TaskArchivedParamsMiddleware().validateParams,
+    taskController.changeStatusArchived) 
 }

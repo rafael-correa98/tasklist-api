@@ -22,32 +22,9 @@ export class User{
         return [...this._tasks]
     }
 
-    private _token: string
-    get token(): string {
-        return this._token
-    }
-
     constructor(name: string, password: string){
         this._id = crypto.randomUUID()
         this._name = name
         this._password = password
-        this._token = crypto.randomUUID()
-    }
-
-    newTask(task: Task){
-        this._tasks.push(task);
-    }
-
-    toJson(){
-        return{
-            id: this.id,
-            name: this.name,
-            password: this.password,
-            token: this.password,
-        }
-    }
-
-    removeTask(taskIndex: number){
-        this._tasks.splice(taskIndex, 1)
     }
 }

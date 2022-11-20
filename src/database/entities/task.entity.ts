@@ -22,13 +22,9 @@ export class TaskEntity {
     updateAt!: Date;
 
     @Column({ name: "id_user" })
-    idUser!: string;
+    userId!: string;
 
-    @ManyToOne(() => UserEntity, { eager: true })
+    @ManyToOne(() => UserEntity, (user) => user.taskEntity)
+    @JoinColumn({ name: "id_user", referencedColumnName: 'id'})
     userEntity!: UserEntity;
-
-    @BeforeUpdate()
-    setUpdateAt(): void {
-        this.updateAt = new Date();
-    }
 }
