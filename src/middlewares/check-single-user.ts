@@ -5,7 +5,9 @@ import { pgHelper } from '../database/pg-helper';
 export class CheckSingleUserMiddleware{
     async single(request: Request, response: Response, next: NextFunction) {
         const { name } = request.body
-        
+
+
+        //responsibilidade do repository
         const manager = pgHelper.client.manager;
 
         const user = await manager.findOne(UserEntity, {

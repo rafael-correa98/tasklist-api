@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { Task } from './task';
 
-export class User{
+export class User {
     private _id: string;
     get id(): string {
         return this._id
@@ -22,7 +22,7 @@ export class User{
         return [...this._tasks]
     }
 
-    constructor(name: string, password: string){
+    constructor(name: string, password: string) {
         this._id = crypto.randomUUID()
         this._name = name
         this._password = password

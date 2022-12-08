@@ -20,11 +20,12 @@ export class TaskEntity {
 
     @Column({ name: "update_at" })
     updateAt!: Date;
+    // update collum
 
     @Column({ name: "id_user" })
     userId!: string;
 
-    @ManyToOne(() => UserEntity, (user) => user.taskEntity)
+    @ManyToOne(() => UserEntity, (user) => user.tasksEntity)
     @JoinColumn({ name: "id_user", referencedColumnName: 'id'})
     userEntity!: UserEntity;
 }

@@ -13,5 +13,5 @@ export class UserEntity {
     password!: string;
 
     @OneToMany(() => TaskEntity, (task) => task.userEntity)
-    taskEntity?: TaskEntity[];
+    tasksEntity?: TaskEntity[];
 }

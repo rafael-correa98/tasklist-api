@@ -7,6 +7,8 @@ export class VerifyExistByIdMiddleware{
     async verifyUserId(request: Request, response: Response, next: NextFunction) {
         const { userId } = request.params;
         
+        //responsibilidade do repository
+        //usar models
         const manager = pgHelper.client.manager;
 
         if(userId.length != 36){
