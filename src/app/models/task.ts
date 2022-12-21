@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { User } from './user';
 
 export class Task{
     private _id: string;
@@ -25,5 +26,27 @@ export class Task{
         this._id = crypto.randomUUID()
         this._description = description
         this._detail = detail
+    }
+
+    static create(
+        id: string,
+        description: string,
+        detail: string,
+        archived: boolean
+    ): Task {
+        const task = new Task(description, detail);
+        task._id = id;
+        task._archived = archived;
+
+        return task;
+    }
+
+    toJson() {
+        return {
+            id: this._id,
+            description: this._description,
+            detail: this._detail,
+            archived: this._archived
+        }
     }
 }
