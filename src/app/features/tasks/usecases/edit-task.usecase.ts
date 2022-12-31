@@ -1,4 +1,5 @@
 import { Task } from "../../../models/task";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { UserRepository } from "../../users/repositories/user.repository";
 import { TaskRepository } from "../repositories/task.repository";
 
@@ -13,10 +14,12 @@ interface RequestData{
 export default class EditTask {
     private _taskRepository: TaskRepository;
     private _userRepository: UserRepository;
-
-    constructor(taskRepository: TaskRepository, userRepository: UserRepository){
+    private _cacheRepository: CacheRepository;
+    
+    constructor(taskRepository: TaskRepository, userRepository: UserRepository, cacheRepository: CacheRepository){
         this._taskRepository = taskRepository;
         this._userRepository = userRepository;
+        this._cacheRepository = cacheRepository;
     }
 
     async execute({
@@ -36,6 +39,8 @@ export default class EditTask {
         }
 
         const tasks = await this._taskRepository.editTask(userId, description, detail)
+
+        await this._cacheRepository.delete(`tasks:${userId}`)
 
        return tasks;
     }

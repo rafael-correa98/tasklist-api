@@ -39,6 +39,12 @@ export class CreateTableTasks1671641948284 implements MigrationInterface {
                         default: "current_timestamp"
                     },
                     {
+                        name: "update_at",
+                        type: "timestamp",
+                        isNullable: false,
+                        default: "current_timestamp"
+                    },
+                    {
                         name: "id_user",
                         type: "uuid",
                         isNullable: false
