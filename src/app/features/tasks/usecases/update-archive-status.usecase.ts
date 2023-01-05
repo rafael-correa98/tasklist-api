@@ -1,4 +1,5 @@
 import { Task } from "../../../models/task";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { UserRepository } from "../../users/repositories/user.repository";
 import { TaskRepository } from "../repositories/task.repository";
 
@@ -11,10 +12,12 @@ interface RequestData{
 export default class UpdateArchivedStatus {
     private _taskRepository: TaskRepository;
     private _userRepository: UserRepository;
+    private _cacheRepository: CacheRepository;
 
-    constructor(taskRepository: TaskRepository, userRepository: UserRepository){
+    constructor(taskRepository: TaskRepository, userRepository: UserRepository, cacheRepository: CacheRepository){
         this._taskRepository = taskRepository;
         this._userRepository = userRepository;
+        this._cacheRepository = cacheRepository;
     }
 
     async execute({ userId, id, archived }: RequestData): Promise<Task>{
@@ -29,6 +32,8 @@ export default class UpdateArchivedStatus {
         }
 
         const task = await this._taskRepository.updateArchived(id, archived);
+
+        await this._cacheRepository.delete(`tasks:${userId}`)
 
         return task;
     }

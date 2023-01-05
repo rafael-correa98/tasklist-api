@@ -78,7 +78,7 @@ export class TaskController {
     
             const { archived } = request.body;
 
-            const usecase = new UpdateArchivedStatus(new TaskRepository, new UserRepository);
+            const usecase = new UpdateArchivedStatus(new TaskRepository, new UserRepository, new CacheRepository);
 
             const result = await usecase.execute({ userId, id, archived })
             
