@@ -7,7 +7,7 @@ import { RedisCacheMock } from '../../../../../src/main/test/repository/RedisMoc
 
 jest.mock("ioredis", () => require("ioredis-mock"))
 
-describe.skip("Testes usecase update-archived-status", () => {
+describe("Testes usecase update-archived-status", () => {
     test("Testa o método execute falhando no userExist", async () => {
         const sut = new UpdateArchivedStatus(new TaskRepository(), new UserRepository(), new RedisCacheMock() as unknown as CacheRepository)
 

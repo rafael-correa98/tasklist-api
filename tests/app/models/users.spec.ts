@@ -2,7 +2,7 @@ import { Task } from '../../../src/app/models/task'
 import { User } from '../../../src/app/models/user'
 
 
-describe.skip("Testes model Users", () => {
+describe("Testes model Users", () => {
     test("Testa o costructor", () => {
         const sut = new User("name", "password")
 

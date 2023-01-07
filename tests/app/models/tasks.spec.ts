@@ -1,6 +1,6 @@
 import { Task } from '../../../src/app/models/task'
 
-describe.skip("Testes model Tasks", () => {
+describe("Testes model Tasks", () => {
     test("Testa o costructor", () => {
         const sut = new Task("description", "detail")
 

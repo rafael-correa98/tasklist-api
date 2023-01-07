@@ -12,7 +12,7 @@ export class UserController {
 
             const result = await usecase.execute(request.body);
             
-            return response.json(result.toJson());
+            return response.status(201).json(result.toJson());
         } catch (error: any) {
             return response.status(409).json({ error: error.message, stack: error })
         }
