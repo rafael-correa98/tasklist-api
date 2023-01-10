@@ -1,6 +1,7 @@
 import { UserRepository } from "../repositories/user.repository";
-import bcrypt from "bcrypt";
 import { User } from "../../../models/user";
+
+const bcrypt = require('bcrypt');
 
 interface RequestData{
     name: string;
